@@ -1,5 +1,9 @@
 # ecertificate
 
+## My Blog
+
+- [Notion](https://www.notion.so/naoki85/2a388395ef29461cb70b93654b2be12c?v=f6ce29e882e540f19e29974d5fa24a0c&pvs=4)
+
 ## Reference
 
 - http://www.oreilly.co.jp/books/9784873117584/
