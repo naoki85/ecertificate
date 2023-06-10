@@ -161,3 +161,6 @@ cython_debug/
 
 mnist.pkl
 *.gz
+
+ptb.train.*
+ptb.vocab.pkl
