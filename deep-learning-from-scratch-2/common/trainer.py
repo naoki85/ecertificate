@@ -5,8 +5,6 @@ from common.util import clip_grads
 
 sys.path.append('..')
 import numpy as np
-from common.optimizer import SGD
-from dataset import spiral
 import matplotlib.pyplot as plt
 
 
@@ -89,7 +87,7 @@ def remove_duplicate(params, grads):
                     params.pop(j)
                     grads.pop(j)
                 # 転置行列として重みを共有する場合
-                elif params[i].ndim == 2 and params[j].ndim == 2 and params[i].T.shape == params[j].shape and np.app(params[i].T == params[j]):
+                elif params[i].ndim == 2 and params[j].ndim == 2 and params[i].T.shape == params[j].shape and np.all(params[i].T == params[j]):
                     grads[i] += grads[j].T
                     find_flg = True
                     params.pop(j)
