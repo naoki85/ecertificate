@@ -164,3 +164,4 @@ mnist.pkl
 
 ptb.train.*
 ptb.vocab.pkl
+Rnnlm.pkl
