@@ -221,7 +221,7 @@ class LSTM:
         o = A[:, 3*H:]
 
         f = sigmoid(f)
-        g = sigmoid(g)
+        g = np.tanh(g)
         i = sigmoid(i)
         o = sigmoid(o)
 
@@ -242,7 +242,7 @@ class LSTM:
 
         di = ds * g
         dg = ds * i
-        df = ds * g
+        df = ds * c_prev
         do = dh_next * tanh_c_next
 
         di *= i * (1 - i)
@@ -279,7 +279,7 @@ class TimeLSTM:
     def forward(self, xs):
         Wx, Wh, b = self.params
         N, T, D = xs.shape
-        H = Wx.shape[0]
+        H = Wh.shape[0]
 
         self.layers = []
         hs = np.empty((N, T, H), dtype='f')

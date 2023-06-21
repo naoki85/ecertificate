@@ -40,7 +40,7 @@ class Trainer:
                 params, grads = remove_duplicate(model.params, model.grads)  # 共有された重みを1つに集約
                 if max_grad is not None:
                     clip_grads(grads, max_grad)
-                optimizer.update(model.params, model.grads)
+                optimizer.update(params, grads)
                 total_loss += loss
                 loss_count += 1
 
