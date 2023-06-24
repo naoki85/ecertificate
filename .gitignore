@@ -166,3 +166,4 @@ ptb.train.*
 ptb.vocab.pkl
 Rnnlm.pkl
 BetterRnnlm.pkl
+AttentionSeq2seq.pkl
