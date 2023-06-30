@@ -18,3 +18,14 @@
 ```
 $ pip install -r requirements.txt
 ```
+
+### Github Pages
+
+- Ruby: 2.7
+
+```
+$ cd docs
+$ gem install jekyll
+$ bundle install
+$ bundle exec jekyll serve
+```
