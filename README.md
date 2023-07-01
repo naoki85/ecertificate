@@ -10,6 +10,8 @@
 - https://github.com/oreilly-japan/deep-learning-from-scratch
 - https://www.oreilly.co.jp/books/9784873118369/
 - https://github.com/oreilly-japan/deep-learning-from-scratch-2
+- https://www.oreilly.co.jp/books/9784873119755/
+- https://github.com/oreilly-japan/deep-learning-from-scratch-4
 
 ## Prepare
 
