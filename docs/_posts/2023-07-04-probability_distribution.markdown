@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "確率分布"
-date:   2023-07-01 10:47:00 +0900
+date:   2023-07-04 10:47:00 +0900
 categories: probability
 ---
 

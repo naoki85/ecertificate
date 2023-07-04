@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "固有値と固有ベクトル"
-date:   2023-07-01 10:47:00 +0900
+date:   2023-07-03 10:47:00 +0900
 categories: matrix
 ---
 
