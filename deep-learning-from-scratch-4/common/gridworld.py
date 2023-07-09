@@ -75,6 +75,6 @@ class GridWorld:
         renderer = render_helper.Renderer(self.reward_map, self.goal_state, self.wall_state)
         renderer.render_v(v, policy, print_value)
 
-    def render_1(self, q, print_value=True):
+    def render_q(self, q, print_value=True):
         renderer = render_helper.Renderer(self.reward_map, self.goal_state, self.wall_state)
-        renderer.render_1(q, print_value)
+        renderer.render_q(q, print_value)
