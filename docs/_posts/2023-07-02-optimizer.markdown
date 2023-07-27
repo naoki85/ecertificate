@@ -7,9 +7,106 @@ categories: optimizer
 
 # Optimizer
 
+## 確率的勾配降下法(SGD)
+
+最も基本的な手法。勾配に学習率をかけた値でパラメータを更新する。
+
+```python
+class SGD:
+    def __init__(self, lr=0.01):
+        self.lr = lr
+
+    def update(self, params, grads):
+        for key in params.keys():
+            params[key] -= self.lr * grads[key]
+```
+
+## モーメンタム法
+
+ボールが急斜面は加速して転がり、上り坂になると徐々に減速する、という発想を取り入れた手法。  
+v が物体の速度にあたり、前回の値から `momentum` という値をかけ、今回の勾配を引くことで実現させている。
+
+```python
+class Momentum:
+    def __init__(self, lr=0.01, momentum=0.9):
+        self.lr = lr
+        self.momentum = momentum
+        self.v = None
+
+    def update(self, params, grads):
+        if self.v is None:
+            self.v = {}
+            for key, val in params.items():
+                self.v[key] = np.zeros_like(val)
+
+        for key in params.keys():
+            self.v[key] = self.momentum * self.v[key] - self.lr * grads[key]
+            params[key] += self.v[key]
+```
+
+## AdaGrad
+
+各パラメータに対して、学習率を個別に適応させる手法。  
+更新が頻繁に行われるパラメータは学習率が低下し、更新が少ないパラメータは学習率が上がる。  
+
+$$
+G = G + ∇J(θ)^2
+$$
+
+$$
+θ = θ - η* \frac{1}{\sqrt{(G + ε)}}*∇J(θ)
+$$
+
+```python
+class AdaGrad:
+    def __init__(self, lr=0.01):
+        self.lr = lr
+        self.h = None
+
+    def update(self, params, grads):
+        if self.h is None:
+            self.h = {}
+            for key, val in params.items():
+                self.h[key] = np.zeros_like(val)
+
+        for key in params.keys():
+            self.h[key] += grads[key] * grads[key]
+            params[key] -= self.lr * grads[key] / (np.sqrt(self.h[key]) + 1e-07)
+```
+
+## RMSProp
+
+AdaGradが勾配の二乗和を無限に蓄積していくと、学習率が0に近づくという問題を解決する手法。  
+このために、過去の勾配の情報は指数的に忘れられ、最近の情報がより重視される。
+
+AdaGrad の時と学習率の更新度合いを決める式が変わる。
+
+$$
+G = γ*G + (1-γ)*∇J(θ)^2
+$$
+
+```python
+class RMSprop:
+    def __init__(self, lr=0.01, decay_rate=0.99):
+        self.lr = lr
+        self.decay_rate = decay_rate
+        self.h = None
+
+    def update(self, params, grads):
+        if self.h is None:
+            self.h = {}
+            for key, val in params.items():
+                self.h[key] = np.zeros_like(val)
+
+        for key in params.key():
+            self.h[key] *= self.decay_rate
+            self.h[key] += (1 - self.decay_rate) * grads[key] * grads[key]
+            params[key] -= self.lr * grads[key] / (np.sqrt(self.h[key]) + 1e-7)
+```
+
 ## Adam
 
-Adamは深層学習のオプティマイザーの一つで、以下の式で計算されます。
+MomentumとRMSPropのアイデアを組み合わせた手法で、一般的には最も良好なパフォーマンスを発揮する。
 
 $$
 m_t = \beta_1m_{t-1} + (1-\beta_1)g_t
@@ -41,8 +138,33 @@ $$
 - $$\alpha$$ は学習率
 - $$\epsilon$$ は数値安定性のための定数
 
+```python
+class Adam:
+    def __init__(self, lr=0.001, beta1=0.9, beta2=0.999):
+        self.lr = lr
+        self.beta1 = beta1
+        self.beta2 = beta2
+        self.iter = 0
+        self.m = None
+        self.v = None
+
+    def update(self, params, grads):
+        if self.m is None:
+            self.m, self.v = {}, {}
+            for key, val in params.items():
+                self.m[key] = np.zeros_like(val)
+                self.v[key] = np.zeros_like(val)
+
+        self.iter += 1
+        lr_t = self.lr * np.sqrt(1.0 - self.beta2 ** self.iter) / (1.0 - self.beta1 ** self.iter)
+
+        for key in params.keys():
+            self.m[key] += (1 - self.beta1) * (grads[key] - self.m[key])
+            self.v[key] += (1 - self.beta2) * (grads[key] ** 2 - self.v[key])
+            params[key] -= lr_t * self.m[key] / (np.sqrt(self.v[key]) + 1e-7)
+```
+
 - [【決定版】スーパーわかりやすい最適化アルゴリズム -損失関数からAdamとニュートン法- - Qiita](https://qiita.com/omiita/items/1735c1d048fe5f611f80#7-adam)
-- [サンプルコード](https://github.com/oreilly-japan/deep-learning-from-scratch-2/blob/master/common/optimizer.py#L101)
 
 # 初期値
 
