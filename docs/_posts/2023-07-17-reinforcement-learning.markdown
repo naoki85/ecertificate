@@ -124,7 +124,6 @@ $$
 - [強化学習の基礎 - Qiita](https://qiita.com/icoxfog417/items/92ac72d4f4463f464fc3)
 - [強化学習の基礎知識とアルゴリズムについて - RICOH](https://www.ricoh.co.jp/technology/techreport/2018/201811/pdf/002.pdf)
 - [【JDLA E資格】強化学習 方策ベース（方策勾配法） - Qiita](https://qiita.com/fridericusgauss/items/aa5215c29646963bda29)
-- [DQNを卒業してA3Cで途中挫折しないための7Tips - Qiita](https://qiita.com/yuishihara/items/2edad97148f09c282a9a)
 
 # 強化学習：方策勾配法
 
@@ -147,4 +146,7 @@ $$
 
 [【JDLA E資格】強化学習 方策ベース（方策勾配法） - Qiita](https://qiita.com/fridericusgauss/items/aa5215c29646963bda29)
 
+## A3C
+
+Actorと呼ばれる機構を用いて方策 $$π_θ$$ に基づいて行動を選択し、Criticと呼ばれる機構にて選択された行動を評価する。  
 [DQNを卒業してA3Cで途中挫折しないための7Tips - Qiita](https://qiita.com/yuishihara/items/2edad97148f09c282a9a)

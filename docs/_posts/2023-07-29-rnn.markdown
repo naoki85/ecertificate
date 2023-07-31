@@ -25,15 +25,80 @@ categories: rnn
 
 ## LSTM
 
+[LSTM (Long Short-Term Memory)](https://cvml-expertguide.net/terms/dl/rnn/lstm/)  
 LSTMは、 **入力ゲート** 、 **忘却ゲート** 、 **出力ゲート** と呼ばれる3つのゲートと、セル状態と呼ばれる内部の状態を持つ。  
 これにより、LSTMは長期的な依存関係を捉え、情報を長期にわたって保持する能力を持つ。
 
+### 入力ゲート
+
+$$
+i_t = \sigma(W_i \cdot [h_{t-1}, x_t] + b_i)
+$$
+
+### 忘却ゲート
+
+$$
+f_t = \sigma(W_f \cdot [h_{t-1}, x_t] + b_f)
+$$
+
+### 出力ゲート
+
+$$
+o_t = \sigma(W_o \cdot [h_{t-1}, x_t] + b_o)
+$$
+
+### セル状態
+
+$$
+g_t = \tanh(W_c \cdot [h_{t-1}, x_t] + b_c)
+$$
+
+$$
+c_t = f_t \cdot c_{t-1} + i_t \cdot g_t
+$$
+
+### 隠れ状態
+
+$$
+h_t = o_t \cdot \tanh(c_t)
+$$
+
+tahn 計算を行うのは、新しい記憶せるを作成する際に前の隠れ層と入力を処理する場合と、新しい隠れ層を作成するとき。
+
 ## GRU
 
+[GRU (Gated Recurrent Unit, ゲート付き再帰ユニット)](https://cvml-expertguide.net/terms/dl/rnn/gru/)  
 GRUはLSTMの簡易版であり、 **リセットゲート** と **更新ゲート** の2つのゲートを持つ。  
 GRUはLSTMと比べてパラメータが少ないため、計算効率が向上し、データが少ない場合にも適している。  
 LSTM に比べ、GRUは **隠れ状態** だけを使用して情報を保存する。
 
+### リセットゲート
+
+$$
+r_t = \sigma(W_r \cdot [h_{t-1}, x_t] + b_r)
+$$
+
+### 更新ゲート
+
+$$
+z_t = \sigma(W_z \cdot [h_{t-1}, x_t] + b_z)
+$$
+
+### 候補隠れ状態
+
+$$
+h_t' = \tanh(W \cdot [r_t \cdot h_{t-1}, x_t] + b)
+$$
+
+### 隠れ状態
+
+$$
+h_t = (1 - z_t) \cdot h_{t-1} + z_t \cdot h_t'
+$$
+
+tanh 計算をするには隠れ層の候補状態を出す時だけで、他は sigmoid 計算になる。
+
+ここで、\(W_r\), \(W_z\), \(W\) および \(b_r\), \(b_z\), \(b\) はパラメータで、\([r_t \cdot h_{t-1}, x_t]\)はリセットゲートによって調整された前の隠れ状態と現在の入力を連結したものを示しています。
 
 ## エコーステートネット（Echo State Network、ESN）
 
@@ -50,3 +115,19 @@ LSTM に比べ、GRUは **隠れ状態** だけを使用して情報を保存す
 ESNは一部のタスク、特に時系列予測や一部の動的システムのモデリングにおいて有効であると実証されているが、その一方で深層学習に比べて一般化能力が低いという課題もある。  
   
 [https://qiita.com/donaldchi/items/c65b978de384821f2942](https://qiita.com/donaldchi/items/c65b978de384821f2942)
+
+# Attention, Transformer
+
+Attentionは、 Query と Key から重みを計算し、 Value の重み付き平均を出力するもの。  
+encoder-decoderモデルで用いられる source-target-Attention では Key と Value は encoder から、 Query は decoder から計算される。  
+
+$$
+Attention(Q, K, V) = softmax(QK^T) \cdot V
+$$
+
+Query 、 Key の次元 ( $$d_k$$ ) が大きくなると逆伝播時のソフトマックス関数の勾配が小さくなり、学習が円滑に進まなくなる。  
+そのため、 $$d_k$$ の平方根で除算する。  
+
+$$
+Attention(Q, K, V) = softmax( \frac{QK^T}{\sqrt{d_k}} ) \cdot V
+$$
