@@ -199,22 +199,138 @@ Xavierの初期値とは異なり、Heの初期値では分散が2/nとなって
 
 ## バッチ正規化
 
-バッチ正規化は、ニューラルネットワークの中間層の出力を正規化することで、学習を高速化し、精度を向上させる手法です。バッチサイズごとに平均と分散を計算し、それを用いて入力を正規化することで、学習の収束を早めることができます。
-バッチ正規化の詳細については、[こちらの記事](https://deepage.net/deep_learning/2016/10/26/batch_normalization.html)をご覧ください。
+バッチ正規化は、ニューラルネットワークの中間層の出力を正規化することで、学習を高速化し、精度を向上させる手法です。  
+バッチサイズごとに平均と分散を計算し、それを用いて入力を正規化することで、学習の収束を早めることができます。  
+[バッチ正規化](https://deepage.net/deep_learning/2016/10/26/batch_normalization.html)
+
+$$
+\mu = \frac{1}{m}\sum_{i=1}^{m} x_i
+$$
+
+$$
+\sigma^2 = \frac{1}{m}\sum_{i=1}^{m} (x_i - \mu)^2
+$$
+
+$$
+\hat{x}_i = \frac{x_i - \mu}{\sqrt{\sigma^2 + \epsilon}}
+$$
+
+$$
+y_i = \gamma \hat{x}_i + \beta
+$$
+
+```py
+def batch_normalization(data, epsilon=1e-6):
+    # 特徴量ごとの平均を計算
+    batch_means = data.mean(axis=0)
+    # 特徴量ごとの分散を計算
+    batch_vars = data.var(axis=0)
+
+    data_hat = (data - batch_means)/np.sqrt(batch_vars+epsilon)
+    data_output = gamma * data_hat + beta
+    return data_output
+```
 
 ## レイヤー正規化
 
-レイヤー正規化は、バッチ正規化のように **中間層の出力** を正規化する手法ですが、バッチ正規化と異なり、バッチ内ではなく層内で正規化を行います。そのため、バッチサイズに依存しないモデルの学習が可能になります。
-レイヤー正規化の詳細については、[こちらの論文](https://arxiv.org/abs/1607.06450)をご覧ください。
+レイヤー正規化は、バッチ正規化のように **中間層の出力** を正規化する手法ですが、バッチ正規化と異なり、バッチ内ではなく層内で正規化を行います。  
+そのため、バッチサイズに依存しないモデルの学習が可能になります。  
+[レイヤー正規化](https://cvml-expertguide.net/terms/dl/layers/batch-normalization-layer/layer-normalization/#:~:text=%E3%83%AC%E3%82%A4%E3%83%A4%E3%83%BC%E6%AD%A3%E8%A6%8F%E5%8C%96%20(Layer%20Normalization)%E3%81%A8%E3%81%AF%EF%BC%8C%E5%8F%AF%E5%A4%89%E9%95%B7,%E3%82%A2%E3%83%AC%E3%83%B3%E3%82%B8%E3%81%97%E3%81%9F%E3%82%82%E3%81%AE%E3%81%A7%E3%81%82%E3%82%8B%EF%BC%8E)
 
-## グループ正規化
+$$
+\mu = \frac{1}{N}\sum_{i=1}^{N} x_i
+$$
 
-グループ正規化は、 **レイヤー正規化の一種であり、層内の特徴マップをグループ単位で正規化する** 手法です。
-グループ正規化を用いることで、層内での正規化がうまくいかない場合でも、グループ単位で正規化することで学習を安定化させることができます。
-グループ正規化の詳細については、[こちらの論文](https://arxiv.org/abs/1803.08494)をご覧ください。
+$$
+\sigma^2 = \frac{1}{N}\sum_{j=1}^{N} (x_{ij} - \mu)^2
+$$
+
+$$
+\hat{x}_{ij} = \frac{x_{ij} - \mu}{\sqrt{\sigma^2 + \epsilon}}
+$$
+
+```py
+def layer_normalization(x):
+    input_mean = np.mean(x, axis = 1)
+    input_var = np.var(x, axis = 1)
+    normed_input = (x - input_mean[...,None])/np.sqrt(input_var[...,None]+1e-8)
+    return normed_input
+```
 
 ## インスタンス正規化
 
 インスタンス正規化は、バッチ正規化やレイヤー正規化のように、中間層の出力を正規化する手法ですが、 **バッチサイズや層内のグループごとではなく、各特徴マップごと** に正規化を行います。
 そのため、畳み込み層の特徴マップに対しても適用可能であり、画像の局所的な特徴を捉えることができます。
-インスタンス正規化の詳細については、[こちらの論文](https://arxiv.org/abs/1607.08022)をご覧ください。
+[インスタンス正規化](https://qiita.com/sho12333/items/8a23f0fcdc03b91cbc04)
+
+$$
+\mu = \frac{1}{L}\sum_{h=1}^{L} x_h
+$$
+
+$$
+\sigma^2 = \frac{1}{L}\sum_{h=1}^{L} (x_h - \mu)^2
+$$
+
+$$
+\hat{x}_h = \frac{x_h - \mu}{\sqrt{\sigma^2 + \epsilon}}
+$$
+
+$$
+y_h = \gamma \hat{x}_h + \beta
+$$
+
+```py
+def instance_normalization(x, epsilon=1e-8):
+    ''' x.shape = (batch_size, channel, data) '''
+    mean = np.mean(x, axis=(2))
+    var = np.var(x, axis=(2))
+    x_normed = (x-mean[...,None])/np.sqrt(var[...,None] + epsilon)
+    return x_normed
+```
+
+インスタンス正規化は画像データに対して使うケースが多いので、データを画像の縦・横で表した4次元（4重配列）データxを引数とする関数実装は以下のようになる。  
+
+```py
+def instance_normalization(x, epsilon=1e-8):
+    ''' x.shape = (batch_size, channel, width, height) '''
+    mean = np.mean(x, axis=(2,3))
+    var = np.var(x, axis=(2,3))
+    x_normed = (x-mean[...,None,None])/np.sqrt(var[...,None,None] + epsilon)
+    return x_normed
+```
+
+## グループ正規化
+
+グループ正規化は、 **レイヤー正規化の一種であり、層内の特徴マップをグループ単位で正規化する** 手法です。
+グループ正規化を用いることで、層内での正規化がうまくいかない場合でも、グループ単位で正規化することで学習を安定化させることができます。  
+バッチ次元に対して独立しているので、バッチサイズが変化してもサイズが変わらないという特徴がある。  
+[グループ正規化](https://data-analytics.fun/2022/09/23/group-normalization/#toc7)
+
+1. 特徴マップを G 個のグループに分割します。それぞれのグループは C/G 個のチャンネルを含みます（ここで C は特徴マップの全チャンネル数です）。
+2. 各グループ内での平均 $$\mu_g$$ と分散 $$\sigma_g^2$$ を計算します。具体的には、グループ g の平均と分散は以下のように計算されます：
+
+$$
+\mu_g = \frac{1}{m} \sum_{i=1}^{m} x_{gi}
+$$
+
+$$
+\sigma_g^2 = \frac{1}{m} \sum_{i=1}^{m} (x_{gi} - \mu_g)^2
+$$
+
+ここで、 $$x_{gi}$$ はグループ g 内のチャンネルの値を表し、m はグループ内のチャンネル数です。
+
+3. 次に、各チャンネルを正規化します：
+
+$$
+\hat{x}_{gi} = \frac{x_{gi} - \mu_g}{\sqrt{\sigma_g^2 + \epsilon}}
+$$
+
+ここで、 $$\epsilon$$ は数値的安定性を保つための小さな値（通常 $$10^{-5}$$ 程度）です。
+
+4. 最後に、スケーリングとシフトを行います：
+
+$$
+y_{gi} = \gamma_g \hat{x}_{gi} + \beta_g
+$$
+
+ここで、 $$\gamma_g$$ と $$\beta_g$$ は学習可能なパラメータで、それぞれスケールとシフトを制御します。これらはモデルの訓練プロセスの一部として学習されます。
