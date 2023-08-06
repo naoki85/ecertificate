@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "機械学習の基礎"
-date:   2023-07-30 21:48:00 +0900
+date:   2023-07-04 21:48:00 +0900
 categories: machine-learning
 ---
 
@@ -21,9 +21,25 @@ Mitchell の提唱した定義が一般的だが、 Googfellow の定義も問�
 - [【統計学】尤度って何？をグラフィカルに説明してみる。 - Qiita](https://qiita.com/kenmatsu4/items/b28d1b3b3d291d0cc698)
 - [尤度関数](https://ja.wikipedia.org/wiki/尤度関数)
 
+尤度関数は、確率関数にデータの各値を代入したもので書ける。
+
+$$
+L_D(p) = \prod_{i=1}^n f(x_i;p)
+$$
+
+また、負の対数尤度は、
+
+$$
+-log L_D(p) = -log \prod_{i=1}^n f(x_i;p)
+$$
+
+$$
+            = -\sum_{i=1}^n log f(x_i;p)
+$$
+
 # バイアス、バリアンス、ノイズ
 
-- [バイアス・バリアンスとは?図解で分かりやすく数式まで徹底解説!! | 機械学習ナビ](https://nisshingeppo.com/ai/whats-bias-variance/)
+- [バイアス・バリアンスとは?図解で分かりやすく数式まで徹底解説!! 機械学習ナビ](https://nisshingeppo.com/ai/whats-bias-variance/)
 
 一般的に、ニューラルネットワークはノイズに対して脆弱である。  
 入力にノイズを加えて学習することは、理論的には「パラメータのノルムペナルティを課すこと」と等価である。
