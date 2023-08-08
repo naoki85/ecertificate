@@ -131,6 +131,9 @@ det(A) = a11 * a22 * a33 + a12 * a23 * a31 + a13 * a21 * a32
 
 n 次正方行列 A に対して、 Av = λv を満たすようなスカラー λ を固有値、非零ベクトル v を固有ベクトルと呼ぶ。
 
+- [固有値](https://ja.wikipedia.org/wiki/%E5%9B%BA%E6%9C%89%E5%80%A4)
+- [固有値分解](https://ja.wikipedia.org/wiki/固有値分解)
+
 # 行列の特異値分解
 
 [特異値分解](https://ja.wikipedia.org/wiki/特異値分解)  

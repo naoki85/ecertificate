@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "正則化"
-date:   2023-06-29 23:19:05 +0900
+date:   2023-07-05 23:19:05 +0900
 categories: regularization
 ---
 

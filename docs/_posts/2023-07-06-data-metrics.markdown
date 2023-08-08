@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "データの評価指標"
-date:   2023-07-01 01:28:05 +0900
+date:   2023-07-07 01:28:05 +0900
 categories: metrics
 ---
 
