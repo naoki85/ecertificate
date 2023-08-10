@@ -38,6 +38,7 @@ def k_means(X, k, max_iter=300):
         # 全てのクラスタに対してセントロイドを再計算
         for idx_centroids in range(k):
             # new_cluster にはデータごとのクラスタ番号が入っているので、対象のクラスタのデータだけ取得した上で平均をとっている
+            # データは各要素ごとの平均を取りたいので、データ軸で平均をとる
             centroids[idx_centroids] = X[new_cluster == idx_centroids].mean(axis=0)
 
         # クラスタによるグループ分けに変化がなかったら終了
