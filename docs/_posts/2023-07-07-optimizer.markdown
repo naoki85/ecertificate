@@ -44,6 +44,38 @@ class Momentum:
             params[key] += self.v[key]
 ```
 
+## Nesterov のモーメンタム法
+
+モーメンタム法をより効率良くしたもの。  
+
+$$
+v_{t+1} = \alpha v_t - \eta \frac{dL}{d\Theta}
+$$
+
+$$
+\Theta_{t+1} = \Theta_{t} + \alpha^2 v_t - (1 + \alpha) \eta \frac{dL}{d\Theta}
+$$
+
+```py
+class Nesterov:
+    def __init__(self, lr=0.01, momentum=0.9):
+        self.lr = lr
+        self.momentum = momentum
+        self.v = None
+
+    def update(self, params, grads):
+        if self.v is None:
+            self.v = {}
+            for key, val in params.items():
+                self.v[key] = np.zeros_like(val)
+
+        for key in params.keys():
+            params[key] += self.momentum * self.momentum * self.v[key]
+            params[key] -= (1 + self.momentum) * self.lr * grads[key]
+            self.v[key] *= self.momentum
+            self.v[key] -= self.lr * grads[key]
+```
+
 ## AdaGrad
 
 各パラメータに対して、学習率を個別に適応させる手法。  
@@ -230,11 +262,13 @@ def batch_normalization(data, epsilon=1e-6):
     data_output = gamma * data_hat + beta
     return data_output
 ```
+**テスト時には、平均と標準偏差は訓練時の移動平均を用いる。**
 
 ## レイヤー正規化
 
 レイヤー正規化は、バッチ正規化のように **中間層の出力** を正規化する手法ですが、バッチ正規化と異なり、バッチ内ではなく層内で正規化を行います。  
 そのため、バッチサイズに依存しないモデルの学習が可能になります。  
+ミニバッチ内のデータごとに、正規化に用いる平均と標準偏差が異なる。  
 [レイヤー正規化](https://cvml-expertguide.net/terms/dl/layers/batch-normalization-layer/layer-normalization/#:~:text=%E3%83%AC%E3%82%A4%E3%83%A4%E3%83%BC%E6%AD%A3%E8%A6%8F%E5%8C%96%20(Layer%20Normalization)%E3%81%A8%E3%81%AF%EF%BC%8C%E5%8F%AF%E5%A4%89%E9%95%B7,%E3%82%A2%E3%83%AC%E3%83%B3%E3%82%B8%E3%81%97%E3%81%9F%E3%82%82%E3%81%AE%E3%81%A7%E3%81%82%E3%82%8B%EF%BC%8E)
 
 $$
@@ -259,8 +293,9 @@ def layer_normalization(x):
 
 ## インスタンス正規化
 
-インスタンス正規化は、バッチ正規化やレイヤー正規化のように、中間層の出力を正規化する手法ですが、 **バッチサイズや層内のグループごとではなく、各特徴マップごと** に正規化を行います。
-そのため、畳み込み層の特徴マップに対しても適用可能であり、画像の局所的な特徴を捉えることができます。
+インスタンス正規化は、バッチ正規化やレイヤー正規化のように、中間層の出力を正規化する手法ですが、 **バッチサイズや層内のグループごとではなく、各特徴マップごと** に正規化を行います。  
+マップの形式が (N, C, W, H) とすると、 W, H で正規化される。これにより、画像の場合はコントラストが取り除かれる。  
+そのため、畳み込み層の特徴マップに対しても適用可能であり、画像の局所的な特徴を捉えることができます。  
 [インスタンス正規化](https://qiita.com/sho12333/items/8a23f0fcdc03b91cbc04)
 
 $$
@@ -344,3 +379,26 @@ $$
 ベイズ最適化は、確率モデル（主に **ガウス過程** ）を使用してハイパーパラメータ探索を行う手法。  
 これにより、過去の試行結果から得られた情報を活用して、次に試すべきハイパーパラメータの組み合わせを選択する。  
 ベイズ最適化は、ランダムサーチやグリッドサーチよりも効率的に探索空間を探索し、少ない試行回数で最適解に収束できる場合がある。
+
+# ドロップアウト法
+
+- 学習時、ランダムにノードを消す。 rand は 0 以上 1 未満の乱数を生成する。（似たようなメソッドの randn は標準正規分布に従って乱数を出力する）
+- 逆伝播時には、消したノードの勾配は伝えたくないので、そのまま mask をかける
+- 推論時は、入力に対し、 1-self.dropout_ratio をかけた値を利用する
+
+```
+class Dropout:
+    def __init__(self, dropout_ratio=0.5):
+        self.dropout_ratio = dropout_ratio
+        self.mask = None
+
+    def forward(self, x, train_flg=True):
+        if train_flg:
+            self.mask = np.random.rand(*x.shape) > self.dropout_ratio
+            return x * self.mask
+        else:
+            return x * (1.0 - self.dropout_ratio)
+
+    def backward(self, dout):
+        return dout * self.mask
+```

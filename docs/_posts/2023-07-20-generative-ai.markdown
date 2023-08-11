@@ -65,6 +65,11 @@ Neural Style Transferと呼ばれる深層学習による画風スタイル変�
 pix2pixでは、実際に画像変換を担うU-Netを用いたGeneratorと、Generatorによって変換された画像なのか、真値の画像なのかを識別するDiscriminatorによって成り立ちます。Discriminatorは **Patch GAN** と呼ばれるある画像の一定範囲ごとに識別を実行する仕組みを取り入れています。  
 pix2pixの学習は、GANのように敵対的な損失関数と変換された画像の画素値と真値の画素値の差を最小にする回帰の最適化を行います。Discriminatorを適用する効果(損失関数に含める効果)は、単に画素値の回帰では平均的な画素値に変換すると損失関数の値が下がる傾向がありますが、それを回避する効果があります。Discriminatorによって、真値と変換した画像を比較して、画像として整合性が取れているかのような評価ができます。  
 
+# 自己符号化器（Autoencoder）
+
+autoencoder の中間表現の次元は、通常、入力 x よりも小さくする。  
+autoencoder でもペナルティ項 $$\lambda \sum ||\nabla_x h_i||^2$$ を与えることで入力のわずかな違いの影響を受けにくくなる。
+
 # 変分自己符号化器（Variational Autoencoder、VAE）
 
 VAE は、深層学習とベイズ推論を組み合わせた一種の生成モデル。  
