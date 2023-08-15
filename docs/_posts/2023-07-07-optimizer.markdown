@@ -188,12 +188,14 @@ class Adam:
                 self.v[key] = np.zeros_like(val)
 
         self.iter += 1
-        lr_t = self.lr * np.sqrt(1.0 - self.beta2 ** self.iter) / (1.0 - self.beta1 ** self.iter)
 
         for key in params.keys():
-            self.m[key] += (1 - self.beta1) * (grads[key] - self.m[key])
-            self.v[key] += (1 - self.beta2) * (grads[key] ** 2 - self.v[key])
-            params[key] -= lr_t * self.m[key] / (np.sqrt(self.v[key]) + 1e-7)
+            self.m[key] = self.beta1 * self.m[key] + (1 - self.beta1) * grads[key]
+            self.v[key] = self.beta2 * self.v[key] + (1 - self.beta2) * (grads[key] ** 2)
+            
+            m = self.m[key] / (1 - self.beta1 ** self.iter) # 1 次モーメント
+            v = self.v[key] / (1 - self.beta2 ** self.iter) # 2 次モーメント
+            params[key] -= self.lr * v / (m + 1e-7)
 ```
 
 - [【決定版】スーパーわかりやすい最適化アルゴリズム -損失関数からAdamとニュートン法- - Qiita](https://qiita.com/omiita/items/1735c1d048fe5f611f80#7-adam)
