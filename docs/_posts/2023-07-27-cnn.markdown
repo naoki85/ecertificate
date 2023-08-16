@@ -122,7 +122,10 @@ non-maximum suppression という考え方で、スコアの低いものから�
 SSD は、2016年に同様に導入され、YOLO と同様にシングルショットの物体検出アルゴリズム。
 しかし、SSD は、YOLO のようなアンカーボックスを使用する代わりに、 **デフォルトボックスのセットを使用して複数のスケールとアスペクト比** でオブジェクトの位置とサイズを予測している。
 
-- [物体検出の５つの代表的なアーキテクチャの特徴まとめ](https://ai-kenkyujo.com/artificial-intelligence/ai-architecture/)
+- [物体検出の５つの代表的なアーキテクチャの特徴まとめ](https://ai-kenkyujo.com/artificial-intelligence/ai-architecture/)  
+
+YOLO や SSD に代表されるシングルショット系の手法では、グリッドごとに所定の数の物体を検出する。  
+モデルの構造がシンプルなこと、軽量に動作すること、背景の特徴を暗に学習できるという特徴がある。
 
 ## FCOS (Fully Convolutional One-Stage Object Detection) 
 
