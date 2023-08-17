@@ -5,6 +5,15 @@ date:   2023-07-10 09:03:00 +0900
 categories: supervised-learning
 ---
 
+# シグモイド関数
+
+$$
+sigmoid(x) = \frac{1}{1 + exp(-x)}
+$$
+
+シグモイド関数の導関数は、 `y(1 - y)` になる。  
+[シグモイド関数の微分](https://qiita.com/yosshi4486/items/d111272edeba0984cef2)
+
 # ソフトマックス関数
 
 $$
