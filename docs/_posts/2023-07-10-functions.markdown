@@ -39,3 +39,39 @@ class Softmax:
 
 逆伝播の微分式は、 $$(y -t) / S$$ になる。  
 導出過程は、 [こちらの記事](https://www.anarchive-beta.com/entry/2020/08/06/180000) や、ゼロつくの付録を参照。
+
+# アフィンノードの逆伝播
+
+[Python DeepLearningに再挑戦 15 誤差逆伝播法 Affine/Softmaxレイヤの実装](https://pythonskywalker.hatenablog.com/entry/2016/12/25/144926)  
+アフィンノードの逆伝播では、
+
+$$
+\frac{\partial L}{\partial W} = X^T \frac{\partial L}{\partial Y}
+$$
+
+$$
+\frac{\partial L}{\partial X} = \frac{\partial L}{\partial Y} W^T
+$$
+入力 x 側の逆伝播では勾配 * W^T、重み W 側の逆伝播では X^T * 勾配を行う。
+
+```py
+def backward(self, dout):
+    W, b = self.params
+    dx = np.dot(dout, W.T)
+    dW = np.dot(self.x.T, dout)
+    db = np.sum(dout, axis=0)
+    # ...
+```
+バイアスは、バッチサイズ方向に合計をする。  
+バッチサイズで合計すると、このような感じになる。
+
+```py
+>>> import numpy as np
+>>> dY = np.array([[1, 2, 3], [4, 5, 6]])
+>>> dY
+array([[1, 2, 3],
+       [4, 5, 6]])
+>>> dB = np.sum(dY, axis=0)
+>>> dB
+array([5, 7, 9])
+```
