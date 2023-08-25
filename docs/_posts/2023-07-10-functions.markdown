@@ -40,6 +40,16 @@ class Softmax:
 逆伝播の微分式は、 $$(y -t) / S$$ になる。  
 導出過程は、 [こちらの記事](https://www.anarchive-beta.com/entry/2020/08/06/180000) や、ゼロつくの付録を参照。
 
+```py
+class SoftmaxWithLoss:
+    # ...
+    def backward(self, dout=1):
+        batch_size = self.t.shape[0]
+        dx = (self.y - self.t) / batch_size
+
+        return dx
+```
+
 # アフィンノードの逆伝播
 
 [Python DeepLearningに再挑戦 15 誤差逆伝播法 Affine/Softmaxレイヤの実装](https://pythonskywalker.hatenablog.com/entry/2016/12/25/144926)  
@@ -52,6 +62,7 @@ $$
 $$
 \frac{\partial L}{\partial X} = \frac{\partial L}{\partial Y} W^T
 $$
+
 入力 x 側の逆伝播では勾配 * W^T、重み W 側の逆伝播では X^T * 勾配を行う。
 
 ```py
