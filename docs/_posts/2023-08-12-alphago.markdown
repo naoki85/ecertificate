@@ -16,7 +16,7 @@ AlphaGo では、畳み込みニューラルネットワークでモデル化し
 - パラメータの更新は以下の式で行う
 
 $$
-\Delta \sigma = \frac{\alpha}{m} \sum_{k=1}^{m} \frac{\partial log p_{\partial}(a^k|s^k)}{\partial \sigma}
+\Delta \sigma = \frac{\alpha}{m} \sum_{k=1}^{m} \frac{\partial \log p_{\partial}(a^k|s^k)}{\partial \sigma}
 $$
 
 ### 2. RL 方策ネットワーク（RL: 強化学習）
@@ -26,7 +26,7 @@ $$
 - パラメータの更新は以下の式で行う。
 
 $$
-\Delta \rho = \frac{\alpha}{n} \sum_{i=1}^{n} \sum_{t=1}^{T^i} \frac{\partial log p_{\rho}(a_t^i|s_t^i)}{\partial \rho}(z_t^i - v(s_t^i))
+\Delta \rho = \frac{\alpha}{n} \sum_{i=1}^{n} \sum_{t=1}^{T^i} \frac{\partial \log p_{\rho}(a_t^i|s_t^i)}{\partial \rho}(z_t^i - v(s_t^i))
 $$
 
 ### 3. 盤面に関する価値関数を評価

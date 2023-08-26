@@ -39,14 +39,15 @@ KLダイバージェンスとは2つの確率分布の異なりを数値化し�
   
 
 $$
-D_{KL}[q(x)][p(x)] = \int_{-\infty}^{\infty} q(x) \log \frac{q(x)}{p(x)} dx = \int_{-\infty}^{\infty} q(x) \log q(x) dx - \int_{-\infty}^{\infty} q(x) \log p(x) dx
+D_{KL}[p(x)][q(x)] = \int_{-\infty}^{\infty} p(x) \log \frac{p(x)}{q(x)} dx = \int_{-\infty}^{\infty} p(x) \log p(x) dx - \int_{-\infty}^{\infty} p(x) \log q(x) dx
 $$
   
 
-KLダイバージェンスには任意の確率分布の組み合わせに対して $$KL[q(x)][p(x)] \ge 0$$ という性質があり、確率の異なりを表したものですから、 $$KL[q(x)][p(x)] = 0$$ となり、等号が成り立つのは2つの分布が完全に一致する場合に限られる。  
+KLダイバージェンスには任意の確率分布の組み合わせに対して $$KL[p(x)][q(x)] \ge 0$$ という性質がある  
+確率の異なりを表したものであるため、 $$KL[p(x)][q(x)] = 0$$ となり等号が成り立つのは2つの分布が完全に一致する場合に限られる。  
 KLダイバージェンスは非負であり2つの確率分布の「異なり」を数値化していることから、2つの分布間のなんらかの距離を表すと考えられがち。  
   
-しかし、一般的には $$KL[q(x)][p(x)] \neq KL[p(x)][q(x)]$$ となります。  
+しかし、一般的には $$KL[p(x)][q(x)] \neq KL[q(x)][p(x)]$$ となる。  
 $$p(x)$$ を基準にするか $$q(x)$$ を基準にするかで、KLダイバージェンスの値は変化してしまう。  
 
 ## JSダイバージェンス
@@ -76,4 +77,16 @@ $$
 
 ## モンテカルロ積分
 
-[モンテカルロ積分の直感的理解と必要サンプル数の導出・精度向上などまとめ - あつまれ統計の森](https://www.hello-statisticians.com/explain-terms-cat/monte_carlo1.html)
+[モンテカルロ積分の直感的理解と必要サンプル数の導出・精度向上などまとめ - あつまれ統計の森](https://www.hello-statisticians.com/explain-terms-cat/monte_carlo1.html){:target="blank"}  
+真の分布 p(x) による期待値をデータ D による平均によって置き換える。  
+以下のようなエントロピーがあったとき、
+
+$$
+H(X) = -\int_X p(x) \log q(x; \theta)
+$$
+
+以下のように置き換えることができる。
+
+$$
+\tilde{H(X)} = - \frac{1}{n} \sum_{i=1}^{n} \log q(x; \theta)
+$$

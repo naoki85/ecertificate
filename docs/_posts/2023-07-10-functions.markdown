@@ -12,7 +12,7 @@ sigmoid(x) = \frac{1}{1 + exp(-x)}
 $$
 
 シグモイド関数の導関数は、 `y(1 - y)` になる。  
-[シグモイド関数の微分](https://qiita.com/yosshi4486/items/d111272edeba0984cef2)
+[シグモイド関数の微分](https://qiita.com/yosshi4486/items/d111272edeba0984cef2){:target="blank"}
 
 # ソフトマックス関数
 
@@ -23,7 +23,7 @@ $$
 ソフトマックス関数は入力の差にのみ依存する。  
 この性質を利用して、 z - max(z) のように最大値を引くとオーバーフロー対策ができる。  
   
-[ソフトマックス関数の微分](https://qiita.com/hatahataDev/items/4f4c744a534f475ce263)  
+[ソフトマックス関数の微分](https://qiita.com/hatahataDev/items/4f4c744a534f475ce263){:target="blank"}  
 
 ```py
 class Softmax:
@@ -38,7 +38,7 @@ class Softmax:
 # ソフトマックス関数と交差エントロピー
 
 逆伝播の微分式は、 $$(y -t) / S$$ になる。  
-導出過程は、 [こちらの記事](https://www.anarchive-beta.com/entry/2020/08/06/180000) や、ゼロつくの付録を参照。
+導出過程は、 [こちらの記事](https://www.anarchive-beta.com/entry/2020/08/06/180000){:target="blank"} や、ゼロつくの付録を参照。
 
 ```py
 class SoftmaxWithLoss:
@@ -52,7 +52,7 @@ class SoftmaxWithLoss:
 
 # アフィンノードの逆伝播
 
-[Python DeepLearningに再挑戦 15 誤差逆伝播法 Affine/Softmaxレイヤの実装](https://pythonskywalker.hatenablog.com/entry/2016/12/25/144926)  
+[Python DeepLearningに再挑戦 15 誤差逆伝播法 Affine/Softmaxレイヤの実装](https://pythonskywalker.hatenablog.com/entry/2016/12/25/144926){:target="blank"}  
 アフィンノードの逆伝播では、
 
 $$

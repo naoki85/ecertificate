@@ -96,3 +96,8 @@ print('適合率:{:.3f}'.format(precision_score(y_test, y_pred)))
 print('再現率:{:.3f}'.format(recall_score(y_test, y_pred)))
 print('F1値:{:.3f}'.format(f1_score(y_test, y_pred)))
 ```
+
+# PR 曲線
+
+縦軸に適合率、横軸に再現率をとる曲線。  
+適合率/精度と再現率が一致する点をブレークイーブンポイントとよび、この点が右上にくるほど良いモデルができたと結論づけることができる。

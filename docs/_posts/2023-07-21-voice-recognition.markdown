@@ -61,7 +61,7 @@ FFTは、コムソル・コーリー演算（Cooley-Tukey algorithm）とも呼�
 メル尺度は以下の公式で計算されます：  
 
 $$
-m = 2595 log_{10}(1 + f/700)
+m = 2595 \log_{10}(1 + f/700)
 $$
 
 ここで、`m`はメル値、`f`は周波数（Hz）です。この公式は、周波数が約1000Hz以下のときは、周波数とメル値がほぼ等しいという観測結果に基づいています。  
@@ -71,4 +71,4 @@ $$
 この計算では、まず信号のスペクトルをメル尺度に変換し、それに対して離散コサイン変換（DCT）を適用します。これにより、音声信号の感覚的な特性を反映した特徴量を得ることができます。
 
 メル尺度は周波数パラメータによって決まる。  
-[https://ja.wikipedia.org/wiki/%E3%83%A1%E3%83%AB%E5%B0%BA%E5%BA%A6](https://ja.wikipedia.org/wiki/%E3%83%A1%E3%83%AB%E5%B0%BA%E5%BA%A6)
+[https://ja.wikipedia.org/wiki/%E3%83%A1%E3%83%AB%E5%B0%BA%E5%BA%A6](https://ja.wikipedia.org/wiki/%E3%83%A1%E3%83%AB%E5%B0%BA%E5%BA%A6){:target="blank"}

@@ -195,7 +195,7 @@ class Adam:
             
             m = self.m[key] / (1 - self.beta1 ** self.iter) # 1 次モーメント
             v = self.v[key] / (1 - self.beta2 ** self.iter) # 2 次モーメント
-            params[key] -= self.lr * v / (m + 1e-7)
+            params[key] -= self.lr * m / (np.sqrt(v) + 1e-7)
 ```
 
 - [【決定版】スーパーわかりやすい最適化アルゴリズム -損失関数からAdamとニュートン法- - Qiita](https://qiita.com/omiita/items/1735c1d048fe5f611f80#7-adam)
@@ -267,7 +267,8 @@ def batch_normalization(data, epsilon=1e-6):
     data_output = gamma * data_hat + beta
     return data_output
 ```
-**テスト時には、平均と標準偏差は訓練時の移動平均を用いる。**
+**テスト時には、平均と標準偏差は訓練時の移動平均を用いる。**  
+画像では、(N, H, W, C) であれば、軸(N, H, W) （[0, 1, 2]） で平均、分散をとる。
 
 ## レイヤー正規化
 
@@ -295,6 +296,7 @@ def layer_normalization(x):
     normed_input = (x - input_mean[...,None])/np.sqrt(input_var[...,None]+1e-8)
     return normed_input
 ```
+画像では、軸 (H, W, C) （[1, 2, 3]） で平均、分散をとる。
 
 ## インスタンス正規化
 
@@ -338,6 +340,7 @@ def instance_normalization(x, epsilon=1e-8):
     x_normed = (x-mean[...,None,None])/np.sqrt(var[...,None,None] + epsilon)
     return x_normed
 ```
+画像では、軸 (H, W) （[1, 2]） で平均、分散をとる。
 
 ## グループ正規化
 

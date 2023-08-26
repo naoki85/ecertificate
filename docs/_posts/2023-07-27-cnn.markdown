@@ -9,7 +9,7 @@ categories: cnn
 
 [https://xaqiita.com/obukoh/items/2916feae33c2f9ca193e](https://xaqiita.com/obukoh/items/2916feae33c2f9ca193e)
 
-- 畳み込みの定義。 $$\sum_m \sum_n I(i + m, j + n)K(n, n)$$
+- 畳み込みの定義。 $$\sum_m \sum_n I(i + m, j + n)K(m, n)$$
 - 畳み込みにおいて、フィルタが大きくなると計算量は増大する。
 - 畳み込みは、入力チャンネル数より出力のチャンネル数を大きくするもできる。
 - 畳み込みにおけるフィルタサイズは、正方形だけではなく、長方形でも良い。
